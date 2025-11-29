@@ -8,7 +8,7 @@
 
     - name: Install Neofetch (to verify apt module)
       ansible.builtin.apt:
-        name: Neofetch
+        name: fastfetch
         state: present
         update_cache: yes
 
