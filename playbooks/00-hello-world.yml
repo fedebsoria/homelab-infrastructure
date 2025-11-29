@@ -6,7 +6,13 @@
     - name: Ping connectivity
       ansible.builtin.ping:
 
-    - name: Install Neofetch (to verify apt module)
+    - name: Add Fastfetch PPA
+      ansible.builtin.apt_repository:
+        repo: ppa:zhangsongcui3371/fastfetch
+        state: present
+        update_cache: yes
+
+    - name: Install fastfetch (to verify apt module)
       ansible.builtin.apt:
         name: fastfetch
         state: present
