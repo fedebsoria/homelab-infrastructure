@@ -1,0 +1,33 @@
+---
+- name: 02 - Deploy Portainer Service
+  hosts: servers
+  become: false 
+
+  vars:
+    service_name: portainer
+    base_dir: "{{ ansible_env.HOME }}/docker"
+
+  tasks:
+    - name: Create service directory
+      ansible.builtin.file:
+        path: "{{ base_dir }}/{{ service_name }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy Docker Compose definition
+      ansible.builtin.copy:
+        src: "../templates/{{ service_name }}/docker-compose.yml"
+        dest: "{{ base_dir }}/{{ service_name }}/docker-compose.yml"
+        mode: '0644'
+
+    - name: Tear down existing service (Ensure clean state)
+      community.docker.docker_compose_v2:
+        project_src: "{{ base_dir }}/{{ service_name }}"
+        state: absent
+      ignore_errors: true
+
+    - name: Deploy Portainer Stack
+      community.docker.docker_compose_v2:
+        project_src: "{{ base_dir }}/{{ service_name }}"
+        state: present
+        pull: always
