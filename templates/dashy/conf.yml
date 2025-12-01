@@ -1,0 +1,19 @@
+pageInfo:
+  title: My HomeLab
+  description: Welcome to your new dashboard
+  navLinks:
+    - title: GitHub
+      path: https://github.com/fedebsoria
+  layout: auto
+
+sections:
+  - name: Infrastructure
+    items:
+      - title: Portainer
+        description: Docker Management
+        icon: hl-portainer
+        url: http://replace-me-with-ip:9000
+      - title: Dashy
+        description: This Dashboard
+        icon: hl-dashy
+        url: http://replace-me-with-ip:8080

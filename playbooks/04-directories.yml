@@ -1,0 +1,49 @@
+---
+- name: Setup Directory Structure & Deploy Dashy
+  hosts: localhost
+  connection: local
+  become: true
+  vars:
+    base_dir: "/mnt/data"
+    owner: "admin-lab"
+    # Directories to create on the HDD
+    dirs:
+      - "{{ base_dir }}/media"
+      - "{{ base_dir }}/downloads"
+      - "{{ base_dir }}/docker"
+      - "{{ base_dir }}/docker/dashy"
+
+  tasks:
+    # 1. Create the Skeleton
+    - name: Create base directory structure
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ owner }}"
+        group: "{{ owner }}"
+        mode: '0755'
+      loop: "{{ dirs }}"
+
+    # 2. Prepare Dashy Files
+    - name: Copy Dashy configuration
+      ansible.builtin.copy:
+        src: "../templates/dashy/conf.yml"
+        dest: "{{ base_dir }}/docker/dashy/conf.yml"
+        owner: "{{ owner }}"
+        group: "{{ owner }}"
+        mode: '0664' # Write access needed if you want to edit config via UI
+
+    - name: Copy Dashy Compose file
+      ansible.builtin.copy:
+        src: "../templates/dashy/docker-compose.yml"
+        dest: "{{ base_dir }}/docker/dashy/docker-compose.yml"
+        owner: "{{ owner }}"
+        group: "{{ owner }}"
+        mode: '0644'
+
+    # 3. Deploy
+    - name: Deploy Dashy Stack
+      community.docker.docker_compose_v2:
+        project_src: "{{ base_dir }}/docker/dashy"
+        state: present
+        pull: always
