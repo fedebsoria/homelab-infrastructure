@@ -1,6 +1,6 @@
 ---
 - name: Configure Persistent
-  hosts: localhosts
+  hosts: localhost
   connection: local
   become: true
   vars:
