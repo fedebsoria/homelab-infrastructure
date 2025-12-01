@@ -4,7 +4,7 @@ services:
     container_name: dashy
     restart: always
     ports:
-      - "8080:80" # Access via http://IP:8080
+      - "8080:8080" # Access via http://IP:8080
     volumes:
       - /mnt/data/docker/dashy/conf.yml:/app/public/conf.yml
     environment:
