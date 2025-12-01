@@ -9,8 +9,10 @@ services:
       - /mnt/data/docker/dashy/conf.yml:/app/public/conf.yml
     environment:
       - NODE_ENV=production
-    # Limits resources so it doesn't eat your RAM
+      # FORCE Node to use up to 2GB RAM
+      - NODE_OPTIONS=--max-old-space-size=2048
     deploy:
       resources:
         limits:
-          memory: 1G
+          # Increase container hard limit to match
+          memory: 2G
