@@ -1,0 +1,42 @@
+---
+- name: Configure Persistent
+  hosts: localhosts
+  connection: local
+  become: true
+  vars:
+    # Target partition based on lsblk output
+    disk_partition: "/dev/sda1"
+    mount_point: "/mnt/data"
+    # User/group (adjust if different, usually 1000:1000 for first user)
+    owner_user: "admin-lab"
+    owner_group: "admin-lab"
+
+  tasks:
+    - name: Ensure mount directory exists
+      ansible.builtin.file:
+        path: "{{ mount_point }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create ext4 filesystem on partition
+      community.general.filesystem:
+        fstype: ext4
+        dev: "{{ disk_partition }}"
+        # force: [no] ensures we don't wipe existing data if it's already ext4
+        force: no 
+
+    - name: Mount volume and enable on boot
+      ansible.posix.mount:
+        path: "{{ mount_point }}"
+        src: "{{ disk_partition }}"
+        fstype: ext4
+        opts: defaults
+        state: mounted
+
+    - name: Ensure user has write access to the data drive
+      ansible.builtin.file:
+        path: "{{ mount_point }}"
+        state: directory
+        owner: "{{ owner_user }}"
+        group: "{{ owner_group }}"
+        recurse: no # We only change the root of the mount, not inner files for now
