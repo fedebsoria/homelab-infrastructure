@@ -1,0 +1,24 @@
+services:
+  # Service 1: The data base
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword # Only for labs
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: user_lab
+      MYSQL_PASSWORD: securepass
+    volumes :
+     - db_data:/var/lib/mysql #data persistance
+
+  # Service 2: Python app
+  app:
+    build: . # Builds using the Dockerfile inside this folder
+    volumes:
+     - ./app:/app # Maps the local code to the container (Live editing)
+    depends_on:
+      - db # Waits fot the DB to starts
+    tty: true # Keeps the container on
+
+volumes:
+  db_data:
