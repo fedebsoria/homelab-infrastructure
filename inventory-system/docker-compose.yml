@@ -13,7 +13,7 @@ services:
 
   # Service 2: Python app
   app:
-    build: . # Builds using the Dockerfile inside this folder
+    build: ./app # Builds using the Dockerfile inside this folder
     volumes:
      - ./app:/app # Maps the local code to the container (Live editing)
     depends_on:
