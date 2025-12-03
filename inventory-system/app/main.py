@@ -61,8 +61,12 @@ def populate_data(conn, cursor):
     """Inserts initial sample data."""
 
     # 1. Check if data already exists to avoid duplicates
-    if cursor.fetchone()[0] > 0:
-        print("Data already exists. Skipping insertion.")
+    cursor.execute("SELECT COUNT(*) FROM material")
+    result = cursor.fechone()
+
+    #FIX: Safety check in case result is None
+    if result and result[0] > 0:
+        print("Data already exists. Skippint insertion.")
         return
     
     print("Inserting sample data...")
@@ -109,15 +113,17 @@ def main():
         sys.exit("Error: Could not connect to the database after retries.")
 
     try:
-        cursor = conn.cursor()
+        #FIX: buffered=True helps prevent sync issues with the cursor
+        cursor = conn.cursor(buffered=True)
+
         create_tables(cursor)
-        print("\nSUCCESS: Database structure initialized correctly.")
         populate_data(conn, cursor)
         fetch_data(cursor) # Show the result
+
     except mysql.connector.Error as err:
         print(f"Error executing SQL: {err}")
     finally:
-        if conn.is_connected():
+        if conn and conn.is_connected():
             cursor.close()
             conn.close()
 
