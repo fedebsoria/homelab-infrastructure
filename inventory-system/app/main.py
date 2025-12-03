@@ -62,7 +62,7 @@ def populate_data(conn, cursor):
 
     # 1. Check if data already exists to avoid duplicates
     cursor.execute("SELECT COUNT(*) FROM material")
-    result = cursor.fechone()
+    result = cursor.fetchone()
 
     #FIX: Safety check in case result is None
     if result and result[0] > 0:
