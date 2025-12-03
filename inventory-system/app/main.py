@@ -19,7 +19,7 @@ DB_CONFIG = {
 # These classes define the "Shape" of the JSON data we expect from users.
 # Security: if data is wrong, it rejects the request automatically.
 
-class MarialBase(BaseModel):
+class MaterialBase(BaseModel):
     name: str
     category: str
     description: Optional[str] = None
