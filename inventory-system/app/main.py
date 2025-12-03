@@ -82,7 +82,7 @@ def populate_data(conn, cursor):
     print(f" -> Material inserted with ID: {laptop_id}")
 
     # 4. Insert Employee (Assigning the Laptop ID)
-    sql_employee = "INSERT INTO employees (name, role, material_otorgado) VALUES (%s, %s, %s)"
+    sql_employee = "INSERT INTO employees (name, role, given_material) VALUES (%s, %s, %s)"
     val_employee = ("Admin Lab", "DevOps Student", laptop_id)
     cursor.execute(sql_employee,val_employee)
 
