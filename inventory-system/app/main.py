@@ -47,7 +47,7 @@ def create_tables(cursor):
         name VARCHAR(100) NOT NULL,
         role VARCHAR(100),
         given_material INT,
-        FOREIGN KEY (material_otorgado) REFERENCES material(id) ON DELETE SET NULL
+        FOREIGN KEY (given_material) REFERENCES material(id) ON DELETE SET NULL
     ) ENGINE=InnoDB;
     """
     print("Creating table 'material'...")
