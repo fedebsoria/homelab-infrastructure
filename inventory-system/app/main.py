@@ -31,23 +31,23 @@ def create_tables(cursor):
     # 1. IT Material table
     # Use AUTO_INCREMENTE so the ID is automatically generated
     table_material = """
-        CREATE TABLE IF NOT EXIST material (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            category VARCHAR(50) NOT NULL,
-            description TEXT
-        ) ENGINE=InnoDB;
+    CREATE TABLE IF NOT EXISTS material (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        category VARCHAR(50) NOT NULL,
+        description TEXT
+    ) ENGINE=InnoDB;
     """
 
     # 2. Employees table
     # Include the Foreign Key (FK) pointing to material table
     table_employees = """
-    CREATE TABLE IF NOT EXIST employees (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            role VARCHAR(100),
-            given_material INT,
-            FOREIGN KEY (material_otorgado) REFERENCES material(id) ON DELETE SET NULL
+    CREATE TABLE IF NOT EXISTS employees (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        role VARCHAR(100),
+        given_material INT,
+        FOREIGN KEY (material_otorgado) REFERENCES material(id) ON DELETE SET NULL
     ) ENGINE=InnoDB;
     """
     print("Creating table 'material'...")
