@@ -1,2 +1,5 @@
 mysql-connector-python
 tabulate
+fastapi
+uvicorn
+pydantic

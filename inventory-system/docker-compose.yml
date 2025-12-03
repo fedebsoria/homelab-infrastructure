@@ -14,11 +14,17 @@ services:
   # Service 2: Python app
   app:
     build: ./app # Builds using the Dockerfile inside this folder
+    #New command: starts Uvicorn web server
+    # --host 0.0.0.0: listen to all the interfaces (needed in docker)
+    # --reloadl: If there's a change in the code, it reboots automatically
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    #Expose port 8000 for web interface
+    ports:
+     - 8000:8000
     volumes:
      - ./app:/app # Maps the local code to the container (Live editing)
     depends_on:
       - db # Waits fot the DB to starts
-    tty: true # Keeps the container on
 
 volumes:
   db_data:
