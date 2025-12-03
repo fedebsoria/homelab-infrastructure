@@ -1,0 +1,42 @@
+---
+- name: Deploy Inventory API & Database
+  hosts: localhost
+  connection: local
+  become: true
+  vars:
+    # Define key routes to keep order
+    service_name: inventory-system
+    # Folder where the code is inside the repo (relative to this playbook)
+    source_dir: "{{ playbook_dir }}/../inventory-system"
+    # Destiny folder inside the HDD of the server
+    dest_dir: "/mnt/data/docker/{{ service_name }}"
+
+  tasks:
+    - name: Ensure target directory exists
+      ansible.builtin.file:
+        path: "{{ dest_dir }}"
+        state: directory
+        owner: admin-lab
+        group: docker
+        mode: '0755'
+
+    - name: Copy project files to production directory
+      ansible.builtin.copy:
+        src: "{{ source_dir }}/" # The slash at the end ensures that it copies all the files inside and not the folder
+        dest: "{{ dest_dir }}/"
+        owner: admin-lab
+        group: docker
+        mode: 'preserve'
+        force: true
+
+    - name: Build and Deploy with Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ dest_dir }}"
+        state: present
+        build: always # Force rebuilt of the image if the code in Python was changed.
+        pull: always  # Try to update the MariaDB image if there's a new one.
+      register: output
+
+    - name: Show Deployment Info
+      ansible.builtin.debug:
+        msg: "Inventory System deployed at {{ dest_dir }}. Containers are running."
