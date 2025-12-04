@@ -17,7 +17,7 @@ echo "Initiating backup for MariaDB container: $CONTAINER_NAME..."
 mkdir -p "$BACKUP_DIR"
 
 # 2. Execute mysqldump from inside the container
-docker exec "$CONTAINER_NAME" \
+/usr/bin/docker exec "$CONTAINER_NAME" \
     mysqldump -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" > "$BACKUP_DIR/$FILENAME"
 
 
