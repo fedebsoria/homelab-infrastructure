@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- CONFIG. ---
-BACKUP_DIR="~/backups_db"
+BACKUP_DIR="$HOME/backups_db"
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 CONTAINER_NAME="inventory-system-db-1"
 DB_USER="user_lab"
